@@ -4,5 +4,5 @@ from . import views
 
 
 urlpatterns=[
-    #path('user_detail/', views.UserDetail.as_view()),
+    path('allMag/', views.getAllMagasins),
 ]

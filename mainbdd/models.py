@@ -20,10 +20,6 @@ class Utilisateur(models.Model):
 class Categorie(models.Model):
     categorie_photo = models.ImageField(upload_to='categorie_photo')
     nom = models.CharField(max_length=20)
-
-
-
-
     def __str__(self):
         return self.nom
 
@@ -60,11 +56,11 @@ class Jour(models.Model):
 class Horeur(models.Model):
     heur_debut = models.TimeField( auto_now=False, auto_now_add=False)
     heur_fin = models.TimeField( auto_now=False, auto_now_add=False)
-    jour = models.ForeignKey('Jour', on_delete=models.CASCADE , related_name='horeur')
-    magasin = models.ForeignKey('Magasin', on_delete=models.CASCADE , related_name='horeur')
+    jour = models.ForeignKey('Jour', on_delete=models.CASCADE , related_name='horeurs')
+    magasin = models.ForeignKey('Magasin', on_delete=models.CASCADE , related_name='horeurs')
 
     def __str__(self):
-        return jour + str(self.heur_debut) +'to'+str(self.heur_fin)
+        return 'horeur :'+str(self.id)
 
 
 class Publication(models.Model):
@@ -87,7 +83,9 @@ class Service(models.Model):
     nom = models.CharField(max_length=50)
     description = models.TextField()
     prix = models.FloatField()
-    magasin = models.ForeignKey('Magasin',  on_delete=models.CASCADE)
+    magasin = models.ForeignKey('Magasin',  on_delete=models.CASCADE , related_name='services')
+    def __str__(self):
+        return self.nom
     
 
 
