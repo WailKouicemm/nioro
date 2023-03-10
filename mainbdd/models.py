@@ -20,14 +20,17 @@ class Utilisateur(models.Model):
 class Categorie(models.Model):
     categorie_photo = models.ImageField(upload_to='categorie_photo')
     nom = models.CharField(max_length=20)
+    vu = models.IntegerField(default = 0)
     def __str__(self):
         return self.nom
 
 
 class Magasin(models.Model):
-    nom = models.CharField(max_length=20)
+    nom = models.CharField(max_length=20, unique= True)
     magasin_photo = models.ImageField(upload_to='magasin_photo',default='magasin_photo/default-mag.png')
     description = models.TextField()
+    lien_de_verification = models.CharField(max_length=200,)
+    valid = models.BooleanField(default = False)
     lien_facebook = models.CharField( max_length=50)
     lien_instagram = models.CharField( max_length=50)
     lien_snapshat = models.CharField( max_length=50)
@@ -47,16 +50,16 @@ class Magasin(models.Model):
 
 
 class Jour(models.Model):
-    jour = models.CharField(max_length=50)
+    jour = models.CharField(max_length=50,)
     def __str__(self):
         return self.jour
 
 
 
-class Horeur(models.Model):
+class Horaire(models.Model):
     heur_debut = models.TimeField( auto_now=False, auto_now_add=False)
     heur_fin = models.TimeField( auto_now=False, auto_now_add=False)
-    jour = models.ForeignKey('Jour', on_delete=models.CASCADE , related_name='horeurs')
+    jour = models.ForeignKey('Jour', on_delete=models.CASCADE )
     magasin = models.ForeignKey('Magasin', on_delete=models.CASCADE , related_name='horeurs')
 
     def __str__(self):
@@ -82,16 +85,19 @@ class Photos(models.Model):
 class Service(models.Model):
     nom = models.CharField(max_length=50)
     description = models.TextField()
+    categorie = models.ForeignKey('Categorie', on_delete=models.CASCADE , related_name='services',)
     prix = models.FloatField()
+    rank = models.FloatField(default = 0)
     magasin = models.ForeignKey('Magasin',  on_delete=models.CASCADE , related_name='services')
     def __str__(self):
         return self.nom
     
 
 
-class ServiseNonDispo(models.Model):
-    heur_debut = models.DateTimeField(auto_now=False, auto_now_add=False)
-    heur_fin = models.DateTimeField(auto_now=False, auto_now_add=False)
+class ServiceDispo(models.Model):
+    jour=models.CharField(max_length=50 )
+    heur_debut = models.TimeField(auto_now=False, auto_now_add=False)
+    heur_fin = models.TimeField(auto_now=False, auto_now_add=False)
     service = models.ForeignKey(Service, on_delete=models.CASCADE , related_name='disponible')
     def __str__(self):
         return str(self.id)

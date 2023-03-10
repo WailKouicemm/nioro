@@ -4,9 +4,9 @@ from .models import *
 
 
 
-class HoreurSerializer(serializers.ModelSerializer):
+class HoraireSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Horeur
+        model = Horaire
         fields = '__all__'
 
 class PhotosSerializer(serializers.ModelSerializer):
@@ -15,7 +15,14 @@ class PhotosSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ServiseNonDispoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ServiceDispo
+        fields = '__all__'
+
+
 class ServiceSerializer(serializers.ModelSerializer):
+    disponible =  ServiseNonDispoSerializer(many = True)
     class Meta:
         model = Service
         fields = '__all__'
@@ -25,9 +32,15 @@ class PublicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Publication
         fields = '__all__'
+class ServiseNonDispoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ServiceDispo
+        fields = '__all__'
+
+
 
 class MagasinSerializer(serializers.ModelSerializer):
-    horeurs = HoreurSerializer(many = True)
+    #Horaire = HoraireSerializer(many = True)
     publications = PublicationSerializer(many = True)
     services = ServiceSerializer(many = True)
     class Meta:
@@ -42,7 +55,6 @@ class UtilisateurSerializer(serializers.ModelSerializer):
 
 
 class CategorieSerializer(serializers.ModelSerializer):
-    magasins = MagasinSerializer(many  = True)
     class Meta:
         model = Categorie
         fields = '__all__'
@@ -59,8 +71,3 @@ class JourSerializer(serializers.ModelSerializer):
 
 
 
-
-class ServiseNonDispoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ServiseNonDispo
-        fields = '__all__'
