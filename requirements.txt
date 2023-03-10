@@ -1,4 +1,4 @@
-apturl==0.5.2
+
 asgiref==3.5.0
 attrs==22.2.0
 bcrypt==3.2.0
